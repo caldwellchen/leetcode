@@ -14,34 +14,41 @@ public class c2 {
 //输出：[7,0,8]
 //解释：342 + 465 = 807.
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        List array=new ArrayList();
-        List array2=new ArrayList();
-        while (l1!= null) {
-            array.add(l1.val);
-            l1=l1.next;
+        int carry=0;
+        ListNode pre = new ListNode();
+        ListNode cur = pre;
+        while (l1 != null || l2 != null) {
+
+            int x=l1!=null?l1.val:0;
+            int y=l2!=null?l2.val:0;
+            int sum=x+y+carry;
+            int f=sum%10;
+            carry=sum/10;
+            cur.next=new ListNode(f);
+            cur=cur.next;
+           if(l1!=null){
+                l1=l1.next;
+            }
+           if (l2!=null){
+                l2=l2.next;
+            }
         }
-        while (l2!= null) {
-            array2.add(l2.val);
-            l1=l2.next;
-        }
-        int sum=0;
-        int len=array2.size();
-        int a[]=new int[len];
-        for (int i = len-1; i < 0; i--) {
-            int i1 = (Integer) array2.get(i) + (Integer) array.get(i);
-            sum+=Math.pow(10,(i-1))*i1;
-             if(i==0&&i1>10)
-             {
-                 len++;
-             }
-        }
-        ListNode listNode=new ListNode();
-       while(sum==0){
-         listNode.val=sum%(10*(len-1));
-         sum-=Math.pow(10,(len-1));
-         listNode=listNode.next;
-         len--;
-       }
-        return listNode;
+        if(carry==1)
+            cur.next=new ListNode(1);
+        return pre.next;
+    }
+
+    public static void main(String[] args) {
+        ListNode l=new ListNode(2);
+        l.next=new ListNode(4);
+        l.next.next=new ListNode(3);
+        ListNode l2=new ListNode(5);
+        l2.next=new ListNode(6);
+        l2.next.next=new ListNode(4);
+
+        c2 c2=new c2();
+        ListNode listNode = c2.addTwoNumbers(l, l2);
+
+
     }
 }
